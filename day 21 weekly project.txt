@@ -1,0 +1,11 @@
+Lets say we have a list L1 = [1, 2, 2, 3, 2, 3, 4, 5], now identify the most repetitive element in the list?
+
+L1=[1, 2, 2, 3, 2, 3, 4, 5]
+highest_count=0
+frequently_occuring_element=None
+for i in L1:
+  count=L1.count(i)
+  if count>highest_count:
+    highest_count=count
+    frequently_occuring_element=i
+print(f"Most repetitive element in L1:{frequently_occuring_element}")
