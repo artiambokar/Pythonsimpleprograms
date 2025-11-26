@@ -1,0 +1,81 @@
+Mission Productivity: The To-Do List Application:- Objective: Create a simple command-line-based to-do list application.
+
+Level: Easy You’ve just been recruited to work for a high-tech secret agency. Your mission? Keep track of all the tasks on your to-do list to make sure the agency runs smoothly. You’ll need to create an application that lets you add, remove, and view tasks—and even mark them as completed to show you’re one step closer to your goal! Task: Build an application that allows users to add, remove, and view tasks. Implement the option to mark tasks as completed. Optional: Add functionality to prioritise tasks. Key Concepts: Lists, dictionaries, loops, functions, input/output handling.
+
+
+try:
+  task=[]
+  print("Simple TO-Do List Application:")
+  print("Menu:")
+  print("1. Add Task")
+  print("2. Remove Task")
+  print("3. View Tasks")
+  print("4. Mark Completed task")
+  print("5. Prioritize task ")
+  print("6. Quit")
+  while True:
+    choice=int(input("Enter your choice:"))
+    if choice==1:
+      task_name=input("Enter the task name:")
+      task.append(task_name)
+      print("Task added successfully!")
+      print("Current tasks:", task)
+      print("Menu:")
+      print("1. Add Task")
+      print("2. Remove Task")
+      print("3. View Tasks")
+      print("4. Mark Completed task")
+      print("5. Prioritize task ")
+      print("6. Quit")
+     
+    elif choice==2:
+      task_name=input("Enter the task name:")
+      if task_name in task:
+        task.remove(task_name)
+        print("Task removed successfully!")
+        print("Current tasks:", task)
+        print("Menu:")
+        print("1. Add Task")
+        print("2. Remove Task")
+        print("3. View Tasks")
+        print("4. Mark Completed task")
+        print("5. Prioritize task ")
+        print("6. Quit")
+        
+    elif choice==3:
+      print("Current tasks:", task)
+    elif choice==4:
+      task_name=input("Enter the task name:")
+      if task_name in task:
+        task.remove(task_name)
+        task.append(task_name)
+        print("Task marked completed successfully!")
+        print("Menu:")
+        print("1. Add Task")
+        print("2. Remove Task")
+        print("3. View Tasks")
+        print("4. Mark Completed task")
+        print("5. Prioritize task ")
+        print("6. Quit")
+    elif choice==5:
+      task_name=input("Enter the task name:")
+      if task_name in task:
+        task.remove(task_name)
+        task.insert(0, task_name)
+        print("Task prioritized successfully!")
+        print("Current tasks:", task)
+        print("Menu:")
+        print("1. Add Task")
+        print("2. Remove Task")
+        print("3. View Tasks")
+        print("4. Mark Completed task")
+        print("5. Prioritize task ")
+        print("6. Quit")
+    elif choice==6:
+      print("Exiting the application...")
+      break
+    else:
+      print("Task not found!")
+      break   
+except:
+  print("Invalid input!")
