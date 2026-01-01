@@ -1,0 +1,44 @@
+Movie Rating Prediction:- Objective: Build a machine-learning model to predict movie ratings.
+
+Level: Advanced Objective: Build a machine-learning model to predict movie ratings. You’ve just been hired by Netflix as their movie ratings wizard. With access to historical data, your job is to predict future movie ratings using regression techniques. Can you help Netflix recommend the next blockbuster hit to millions of users based on your analysis? Task: Download the dataset from https://www.kaggle.com/datasets/rishitjavia/netflix-movie-rating-dataset. Analyze historical movie data to predict ratings using regression techniques. Explore data preprocessing, feature engineering, and machine learning modeling. Key Concepts: Machine learning, data preprocessing, regression.
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+import numpy as np
+
+df1=pd.read_csv('/content/Netflix_Dataset_Movie.csv')
+df2=pd.read_csv('/content/Netflix_Dataset_Rating.csv')
+
+combined_df=pd.merge(df1, df2, on='Movie_ID')
+combined_df.dropna(subset=['Rating', 'Year'], inplace=True)
+
+df1['movie_age'] = 2025 - df1['Year']
+combined_df['movie_age'] = 2025 - combined_df['Year']
+
+feature=['User_ID','Movie_ID','Year','movie_age']
+target='Rating'
+
+X=combined_df[feature]
+y=combined_df[target]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mean_user_id = df2['User_ID'].mean()
+df1['User_ID'] = mean_user_id
+X_pred = df1[['User_ID', 'Movie_ID', 'Year', 'movie_age']]
+df1['predicted_rating'] = model.predict(X_pred)
+
+blockbuster=df1.sort_values(by='predicted_rating', ascending=False).head(1)
+
+print("Blockbuster Movie based on predicted rating:")
+print(blockbuster[['Name', 'Year', 'movie_age','predicted_rating']])
