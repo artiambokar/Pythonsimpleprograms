@@ -1,0 +1,32 @@
+The Fortune Teller’s Number Game:- Objective: Create a number-guessing game.
+
+Level: Easy Imagine you’re helping a fortune teller who claims to know the future but can only hint at numbers. She challenges the user to guess her “magic number”. Whenever a player guesses, she gives a clue: “Too high” or “Too low”. Only those with intuition can guess correctly. Can you code the game and help others test their future-seeing powers? Solution: Use the random module to generate a random number. Use a loop to prompt the user for guesses and provide feedback. Task: The computer randomly selects a number, and the user tries to guess it. Provide feedback such as “Too high” or “Too low”. Continue until the correct number is guessed. Key Concepts: Loops, conditionals, user input, random module.
+
+
+import random
+def fortune_teller():
+  magic_number=random.randint(1,1000)
+  attempts=0
+  
+  print('Welcome to the Fortune Teller Number Game!')
+  print('I will think of a number between 1 and 1000.')
+  print('Guess a number based on your intuition that I have in my mind')
+
+  while True:
+    try:
+      guess=int(input('Enter your guess: '))
+      attempts+=1
+
+      if guess<magic_number:
+        print('Too low! Try again')
+      elif guess>magic_number:
+        print('Too high! Try again')
+      else:
+        print(f'Congratulations! You guessed the number {magic_number} in {attempts} attempts.')
+        break
+    except ValueError:
+      print("Sorry! but thats not the number")
+  
+  
+if __name__=='__main__':
+  fortune_teller()
