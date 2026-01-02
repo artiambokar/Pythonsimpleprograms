@@ -1,0 +1,39 @@
+The Time Traveler’s Temperature Converter:- Create a program that converts temperature units (Celsius to Fahrenheit and vice versa).
+
+Assignment
+Level: Easy You’ve invented a time machine! But there’s a problem—the temperature scales in different eras are all messed up. Some civilizations use Celsius, while others swear by Fahrenheit. Your mission? Build a temperature converter so that wherever you land in time, you can convert temperatures on the go and survive! Solution: Use simple arithmetic for conversion formulas: °C to °F: (°C * 9/5) + 32 °F to °C: (°F – 32) * 5/9 Task: Allow the user to input temperature in Celsius or Fahrenheit. Convert between the two and display the result. Key Concepts: Conditionals, functions, user input.
+
+import numpy as np
+
+try:
+  def temperature_converter():
+    print('Welcome to Time Traveler\'s temperature converter:')
+    
+    temperature=float(input('Enter the temperature: '))
+    unit=input('Enter the unit (C for Celsius or F for Fahrenheit)').upper()
+    
+    fehrenheit=(temperature*9/5)+32
+    celsius=(temperature-32)*5/9
+    
+    roundof_fehrenheit=np.round(fehrenheit,2)
+    roundof_celsius=np.round(celsius,2)
+    
+    if unit=='C':
+      print('Temperature in Fahrenheit:')
+      print(f"{temperature}°C is {roundof_fehrenheit}°F")
+    elif unit=='F':
+      print('Temperature in Celsius:')
+      print(f"{temperature}°F is {roundof_celsius}°C")
+    else:
+        print('Invalid unit entered! Please enter correct unit')
+
+except ValueError as e:
+  print(f'Sorry! but thats not the number ({e})')
+except TypeError:
+  print("Sorry! but thats not the number type")
+except Exception as e:
+  print(f'An unexpected error occurred: {e}')
+
+if __name__=='__main__':
+  temperature_converter()
+
