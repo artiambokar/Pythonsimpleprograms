@@ -1,0 +1,59 @@
+The Hangman Rescue Mission:- Objective: Create a text-based Hangman game.
+
+Assignment
+Level: Medium You’ve just been transported into a magical kingdom where words hold the power to save or doom someone. An evil wizard has captured a poor soul; the only way to free them is by guessing the secret word. Each wrong guess brings the prisoner closer to their fate. Use your code to build this classic game and save the day! Task: Choose a word randomly from a list. Display underscores for each letter and update with correct guesses. Limit incorrect guesses to a set number. Key Concepts: Loops, conditionals, random module, lists, string manipulation.
+
+
+import random
+import requests
+
+def hangman_game():
+    # The Wizard's collection of secret words
+    word_bank_url = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
+    response = requests.get(word_bank_url)
+    word_bank = response.text.splitlines()
+    secret_word = random.choice(word_bank)
+    
+    guessed_letters = []
+    attempts_left = 6
+    display_word = ["_"] * len(secret_word)
+
+    print("--- SAVE THE PRISONER: THE WIZARD'S WORD GAME ---")
+
+    while attempts_left > 0:
+        print(f"\nWord to solve: {' '.join(display_word)}")
+        print(f"Attempts remaining: {attempts_left}")
+        print(f"Letters guessed: {', '.join(guessed_letters)}")
+
+        guess = input("Cast your guess (one letter): ").lower()
+
+        # Validation logic
+        if len(guess) != 1 or not guess.isalpha():
+            print("The wizard only accepts single letters of the alphabet!")
+            continue
+        if guess in guessed_letters:
+            print(f"You already cast the letter '{guess}'. Try another!")
+            continue
+
+        guessed_letters.append(guess)
+
+        # Check if the letter is in the secret word
+        if guess in secret_word:
+            print(f"Correct! '{guess}' glows with magical light.")
+            for i in range(len(secret_word)):
+                if secret_word[i] == guess:
+                    display_word[i] = guess
+        else:
+            attempts_left -= 1
+            print(f"Wrong! The wizard laughs. '{guess}' is not the word.")
+
+        # Check for victory
+        if "_" not in display_word:
+            print(f"\nVICTORY! The word was '{secret_word}'. The prisoner is free!")
+            return
+
+    print(f"\nGAME OVER. The wizard wins. The word was '{secret_word}'.")
+
+
+# Start the game
+hangman_game()
