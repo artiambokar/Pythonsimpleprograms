@@ -1,0 +1,84 @@
+The Real-Time Currency Converter for World Travelers:- Objective: Develop a program to convert currencies using real-time exchange rates.
+
+Assignment Level: Medium Imagine you are an international traveller, jumping between countries every day, needing to make purchases in different currencies. You need a real-time currency converter on your device that helps you convert USD to INR, EUR to JPY, or any currency quickly using live exchange rates. Build a tool that pulls real-time data from an API so you never get stuck overpaying for a cup of coffee in Paris or missing a deal in Tokyo! Task: Use the forex-python or requests module to get exchange rates. Allow users to select currencies and amounts. Display the converted amount and allow for reverse conversion (e.g., USD to INR or INR to USD). Key Concepts: APIs, data retrieval, user input, conditional statements.
+
+from forex_python.converter import CurrencyRates
+#import requests
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
+from decimal import Decimal
+
+CURRENCY_CODES = ["USD", "EUR", "JPY", "CAD", "INR"]
+
+def convert_currency():
+  c=CurrencyRates(force_decimal=True)
+  try:
+    root.config(cursor="wait")
+    root.update()
+
+    raw_amount= amount_field.get()
+
+    Amount=Decimal(raw_amount)
+
+    from_currency = from_currency_var.get()
+    to_currency = to_currency_var.get()
+
+    if from_currency == "" or to_currency == "":
+      messagebox.showinfo("Error", "Please select both currencies.")
+      return
+    
+    if from_currency == to_currency:
+      converted_amount = Amount
+      messagebox.showinfo("Error", "Please select different currencies.")
+      return
+    else:
+      converted_amount = c.convert(from_currency, to_currency, Amount)
+    to_amount_field.config(state='normal')
+    to_amount_field.delete(0, tk.END)
+    to_amount_field.insert(0, f"{converted_amount:,.2f}")
+    #to_amount_field.config(state='readonly')
+  except ValueError:
+    messagebox.showinfo("Error", "Please enter a valid numerical amount.")
+  except KeyError:
+    messagebox.showinfo("Error", "Please select valid currency codes.")  
+  except Exception as e:
+    messagebox.showinfo("Error", f"An error occurred: {e}. Check your internet connection or currency codes.")
+  finally:
+    root.config(cursor="")  
+
+if __name__ == "__main__":
+  root=tk.Tk()
+  root.title("Real-Time Currency Converter")
+  root.geometry("400x250")
+  root.resizable(True,True)
+
+  root.grid_columnconfigure(1, weight=1) 
+ 
+  from_currency_var = tk.StringVar(root)
+  from_currency_var.set("USD") # Default value
+
+  to_currency_var = tk.StringVar(root)
+  to_currency_var.set("INR") # Default value
+
+  tk.Label(root, text="Amount:").grid(row=0, column=0, padx=10, pady=10)
+  amount_field = tk.Entry(root)
+  amount_field.grid(row=0, column=1, padx=10, pady=10)
+  
+  tk.Label(root, text="From Currency:").grid(row=1, column=0, padx=10, pady=5)
+  from_currency_menu=tk.OptionMenu(root, from_currency_var, *CURRENCY_CODES)
+  from_currency_menu.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
+
+  tk.Label(root, text="To Currency:").grid(row=2, column=0, padx=10, pady=5)
+  to_currency_menu=tk.OptionMenu(root, to_currency_var, *CURRENCY_CODES)
+  to_currency_menu.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+
+  convert_button = tk.Button(root, text="Convert", command=convert_currency)
+  convert_button.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
+
+  tk.Label(root, text="Converted Amount:").grid(row=4, column=0, padx=10, pady=10)
+  to_amount_field = tk.Entry(root, state='normal')
+  # Can change to 'readonly' if preferred
+  to_amount_field.grid(row=4, column=1, padx=10, pady=10)
+
+root.mainloop()
