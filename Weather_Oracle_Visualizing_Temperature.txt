@@ -1,0 +1,52 @@
+Weather Oracle: Visualizing Temperature Trends:- Objective: Visualize temperature trends using weather data.
+
+Assignment Level: Medium You work for a cutting-edge environmental organization tracking climate change data. Your mission is to visualize temperature trends over time to see how the world’s climate has shifted. With tools like Matplotlib and Seaborn, you will create meaningful visualizations to share with researchers and scientists globally. Task: Download the dataset from https://www.kaggle.com/datasets/phyamal/glasgow-weather-data-20152019 Use Matplotlib and Seaborn to create line charts and scatter plots to display temperature trends over time. Key Concepts: Data visualization, Matplotlib, Seaborn.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Load and Prepare Data
+df = pd.read_csv('/content/clean_weather_data.csv')
+# Convert 'day' to datetime and set as index for time-series smoothing
+df['day'] = pd.to_datetime(df['day'])
+df.set_index('day', inplace=True)
+
+# 2. Smoothing Data with Moving Averages (Trend Detection)
+# Moving averages filter out daily noise to show the underlying trend
+df['temp_trend'] = df['tempMax'].rolling(window=7).mean()
+df['hum_trend'] = df['humidity'].rolling(window=7).mean()
+
+# 3. Visualizing Trends
+plt.figure(figsize=(14, 10))
+
+# Subplot A: Temperature Trend (tempMin vs tempMax)
+plt.subplot(3, 1, 1)
+plt.plot(df.index, df['tempMax'], alpha=0.3, label='Daily Max')
+plt.plot(df.index, df['temp_trend'], color='red', linewidth=2, label='7-Day Trend')
+plt.fill_between(df.index, df['tempMin'], df['tempMax'], alpha=0.1, label='Temp Range')
+plt.title('Temperature Trends and Fluctuations')
+plt.legend()
+
+# Subplot B: Atmospheric Conditions (cloudCover, humidity, windSpeed)
+plt.subplot(3, 1, 2)
+sns.lineplot(data=df[['cloudCover', 'humidity', 'windSpeed']], dashes=False)
+plt.title('Evolution of Atmospheric Factors Over Time')
+
+# Subplot C: Visibility Correlation
+# Check if humidity or cloud cover is driving lower visibility
+plt.subplot(3, 1, 3)
+sns.scatterplot(data=df, x='humidity', y='visibility', hue='cloudCover', palette='viridis')
+plt.title('Visibility Drivers: Impact of Humidity and Cloud Cover')
+
+plt.tight_layout()
+plt.show()
+
+# 4. Correlation Heatmap
+# Statistically identify which factors move together
+plt.figure(figsize=(10, 6))
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Weather Variables')
+plt.show()
+
+
